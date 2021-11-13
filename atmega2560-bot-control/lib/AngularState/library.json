@@ -1,0 +1,16 @@
+{
+	"name": "AngularState",
+	"keywords": "angular, velocity, encoder",
+	"description": "Tracking angular position, velocity and acceleration using a rotary encoder.",
+	"repository":
+	{
+	  "type": "git",
+	  "url": "https://github.com/Souritra-Garai/AngularState.git"
+	},
+	"frameworks": "arduino",
+	"platforms":
+	[
+	  "atmelavr",
+	  "espressif8266"
+	]
+}

@@ -1,0 +1,26 @@
+#######################################
+# Syntax Coloring Map For AngularState
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+AngularState	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+updateAngularVelocity	KEYWORD2
+getAngularVelocity	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+__ANGULAR_STATE__   LITERAL1
