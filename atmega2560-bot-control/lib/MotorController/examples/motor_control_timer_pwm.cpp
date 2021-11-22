@@ -1,5 +1,5 @@
 /**
- * @file spin_motor_example_timer_pwm.cpp
+ * @file motor_example_timer_pwm.cpp
  * @author Navneet Kaur (navneet.kaur@iitgn.ac.in)
  * @author Souritra Garai (souritra.garai@iitgn.ac.in)
  * @brief Example for running PID controls for a target velocity using timer PWM
@@ -15,9 +15,9 @@
 #include "MotorController.h"
 #include "PhaseCorrect16BitPWM.h"
 
-#define DIRECTION_PIN 22
-#define ENCODER_PIN_A 19
-#define ENCODER_PIN_B 21
+#define DIRECTION_PIN 23
+#define ENCODER_PIN_A 21
+#define ENCODER_PIN_B 19
 
 #define VELOCITY_UPDATE_FREQUENCY 50 // Hz
 
@@ -39,9 +39,9 @@ MotorController motor_controller(
 // printed through the serial port in millisecond.
 long int last_print_time;
 
-// Variable to store the last time the angular 
-// velocity was updated in millisecond.
-long int last_vel_update_time;
+// // Variable to store the last time the angular 
+// // velocity was updated in millisecond.
+// long int last_vel_update_time;
 
 void initializeTimer3();
 
@@ -53,11 +53,11 @@ void setup()
 	Timer1PhaseCorrectPWM::setupTimer();
 	Timer1PhaseCorrectPWM::setupChannelA();
 
-	last_vel_update_time = millis();
+	// last_vel_update_time = millis();
 	last_print_time = millis();
 
 	motor_controller.setMaxControllerOutput(65535);
-	motor_controller.setPIDGains(5, 120, 0);
+	motor_controller.setPIDGains(5000, 2500, 0);
 
 	initializeTimer3();
 

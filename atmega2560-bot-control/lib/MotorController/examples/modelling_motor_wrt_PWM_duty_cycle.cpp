@@ -1,6 +1,17 @@
+/**
+ * @file main.cpp
+ * @author Souritra Garai (souritra.garai@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-11-22
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <Arduino.h>
 
-#include "MotorController.h"
+#include "AngularState.h"
 #include "PhaseCorrect16BitPWM.h"
 
 // This pin is attached to direction control
@@ -20,17 +31,13 @@
 
 // Time interval after which things are
 // printed to serial monitor
-#define SERIAL_PRINT_TIME_PERIOD 1E6 // us
+#define SERIAL_PRINT_TIME_PERIOD 5E5 // us
 
-// Motor controller object to 
-// control motor angular velocity
-MotorController motor_controller(
-  DIRECTION_PIN,
-  ENCODER_PIN_A,
-  ENCODER_PIN_B,
-  CONTROL_ROUTINE_CALL_FREQUENCY,
-  ENCODER_COUNTS_PER_ROTATION,
-  true
+AngularState motor_shaft(
+	ENCODER_PIN_A,
+	ENCODER_PIN_B,
+	CONTROL_ROUTINE_CALL_FREQUENCY,
+	ENCODER_COUNTS_PER_ROTATION
 );
 
 // Variable to fetch and store the current time
@@ -41,10 +48,9 @@ float current_time;
 float last_serial_print_time;
 
 float iteration_num;
-float target_angular_velocity;
+float target_pwm_duty_cycle;
 
 float angular_velocity[5] = {0, 0, 0, 0, 0};
-float pwm_duty_cycle[5] = {0, 0, 0, 0, 0};
 
 float getMean(float array[5])
 {
@@ -77,27 +83,16 @@ void setup()
 	Timer1PhaseCorrectPWM::setupTimer();
 	Timer1PhaseCorrectPWM::setupChannelA();
 
+	pinMode(DIRECTION_PIN, OUTPUT);
+
 	initializeTimer3();
-
-	// Set max controller output according to bit resolution of PWM Duty cycle
-	motor_controller.setMaxControllerOutput(65535);
-
-	// motor_controller.set_polynomial_coefficients_positive_value_positive_acceleration(7548, 3739, -780, 93.8, -3.58);
-	// motor_controller.set_polynomial_coefficients_positive_value_negative_acceleration(10664, 977, -71, 23.8, -1.22);
-	// motor_controller.set_polynomial_coefficients_negative_value_negative_acceleration(-6889, 4173, 977, 119, 4.52);
-	// motor_controller.set_polynomial_coefficients_negative_value_positive_acceleration(-10622, 1025, 144, 34.5, 1.62);
-
-	// Initialize motor controller
-	motor_controller.setPIDGains(2000, 2500, 0);
-
-	motor_controller.enablePIDControl();
 
 	// Initialize global variables	
 	current_time = micros();
 	last_serial_print_time	= current_time;
 
 	iteration_num = 0;
-	target_angular_velocity = 0;
+	target_pwm_duty_cycle = 0;
 
 	// Serial.println("Initialized successfully");
 }
@@ -111,36 +106,30 @@ void loop()
 		float mean_angular_velocity = getMean(angular_velocity);
 		float std_dev_angular_velocity = getStandardDeviation(angular_velocity);
 
-		if (	abs(mean_angular_velocity - target_angular_velocity) < 0.5 &&
-				std_dev_angular_velocity < 0.5	) 
+		if (std_dev_angular_velocity < 0.5) 
 		{
+			// Serial.print("PWM Duty Cycle Output :\tMean : ");
+			// Serial.println(target_pwm_duty_cycle);
+
 			// Serial.print("Velocity :\tMean : ");
 			// Serial.print(mean_angular_velocity);
 			// Serial.print(" rad/s\tStd Dev : ");
 			// Serial.print(std_dev_angular_velocity);
 			// Serial.println(" rad/s");
 
-			float mean_pwm_duty_cycle = getMean(pwm_duty_cycle);
-			float std_dev_pwm_duty_cycle = getStandardDeviation(pwm_duty_cycle);
-
-			// Serial.print("PWM Duty Cycle Output :\tMean : ");
-			// Serial.print(mean_pwm_duty_cycle);
-			// Serial.print("\tStd Dev : ");
-			// Serial.println(std_dev_pwm_duty_cycle);
-
 			Serial.println(
+				String(target_pwm_duty_cycle) + "," +
 				String(mean_angular_velocity) + "," +
-				String(std_dev_angular_velocity) + "," +
-				String(mean_pwm_duty_cycle) + "," +
-				String(std_dev_pwm_duty_cycle)
+				String(std_dev_angular_velocity)
 			);
 
 			iteration_num += 1;
-			target_angular_velocity = 12.0 * sin(2.0 * PI * iteration_num / 20.0);
-			motor_controller.setMotorAngularVelocity(target_angular_velocity);
+			target_pwm_duty_cycle = MAX_PWM_DUTY_CYCLE_INPUT * sin(2.0 * PI * iteration_num / 2000.0);
+			Timer1PhaseCorrectPWM::setDutyCyclePWMChannelA((int) abs(target_pwm_duty_cycle));
+			digitalWrite(DIRECTION_PIN, signbitf(target_pwm_duty_cycle));
 
 			// Serial.print("Next Target : ");
-			// Serial.println(target_angular_velocity);
+			// Serial.println(target_pwm_duty_cycle);
 		}
 
 		last_serial_print_time = current_time;
@@ -193,19 +182,11 @@ void initializeTimer3()
 
 ISR(TIMER3_COMPA_vect)
 {
-	motor_controller.updateAngularState();
-	motor_controller.spinMotor();
-	Timer1PhaseCorrectPWM::setDutyCyclePWMChannelA(motor_controller.getControllerOutput());
+	motor_shaft.updateAngularState();
 
 	angular_velocity[4] = angular_velocity[3];
 	angular_velocity[3] = angular_velocity[2];
 	angular_velocity[2] = angular_velocity[1];
 	angular_velocity[1] = angular_velocity[0];
-	angular_velocity[0] = motor_controller.getMotorAngularVelocity();
-	
-	pwm_duty_cycle[4] = pwm_duty_cycle[3];
-	pwm_duty_cycle[3] = pwm_duty_cycle[2];
-	pwm_duty_cycle[2] = pwm_duty_cycle[1];
-	pwm_duty_cycle[1] = pwm_duty_cycle[0];
-	pwm_duty_cycle[0] = motor_controller.getPIDOutput();
+	motor_shaft.getAngularVelocity(angular_velocity[0]);
 }
