@@ -57,7 +57,12 @@ void setup()
 	last_print_time = millis();
 
 	motor_controller.setMaxControllerOutput(65535);
-	motor_controller.setPIDGains(5000, 2500, 0);
+	motor_controller.setPIDGains(2000, 2500, 0);
+
+	motor_controller.set_polynomial_coefficients_positive_value_positive_acceleration(1827, 3844, 0, 0, 0);
+	motor_controller.set_polynomial_coefficients_positive_value_negative_acceleration(1248, 3894, 0, 0, 0);
+	motor_controller.set_polynomial_coefficients_negative_value_negative_acceleration(-1540, 4031, 0, 0, 0);
+	motor_controller.set_polynomial_coefficients_negative_value_positive_acceleration(-1130, 4054, 0, 0, 0);
 
 	initializeTimer3();
 

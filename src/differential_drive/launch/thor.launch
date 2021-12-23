@@ -1,0 +1,9 @@
+<launch>
+    
+    <node pkg="rosserial_server" type="socket_node" name="rosserial_server" ns="thor">
+        <param name="port" type="int" value="11411"/>
+    </node>
+
+    <node name="diff_drive_node" pkg="differential_drive" type="diff_drive_node" ns="thor"/>
+
+</launch>
