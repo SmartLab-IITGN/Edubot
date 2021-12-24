@@ -12,7 +12,7 @@ class DifferentialDrive
 
         float max_wheel_speed_;
 
-        float getClippedVeloctiy_(float velocity);
+        void reduceWheelVelocties_(std::pair<float, float> &);
 
     public:
 

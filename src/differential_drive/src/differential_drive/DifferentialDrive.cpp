@@ -1,5 +1,7 @@
 #include "differential_drive/DifferentialDrive.h"
 
+#include <math.h>
+
 DifferentialDrive::DifferentialDrive(
     float wheel_base,
     float wheel_radius,
@@ -10,9 +12,23 @@ DifferentialDrive::DifferentialDrive(
     setMaxWheelSpeed(max_wheel_speed);
 }
 
-float DifferentialDrive::getClippedVeloctiy_(float velocity)
+void DifferentialDrive::reduceWheelVelocties_(std::pair<float, float> &wheel_velocities)
 {
-    return std::max(- max_wheel_speed_, std::min(max_wheel_speed_, velocity));
+    if (abs(wheel_velocities.first) > max_wheel_speed_)
+    {
+        float factor = max_wheel_speed_ / abs(wheel_velocities.first);
+
+        wheel_velocities.first *= factor;
+        wheel_velocities.second *= factor;
+    }
+
+    if (abs(wheel_velocities.second) > max_wheel_speed_)
+    {
+        float factor = max_wheel_speed_ / abs(wheel_velocities.second);
+
+        wheel_velocities.first *= factor;
+        wheel_velocities.second *= factor;
+    }
 }
 
 void DifferentialDrive::setMaxWheelSpeed(float max_wheel_speed)
@@ -26,10 +42,14 @@ std::pair<float, float> DifferentialDrive::getWheelVelocity(
 ) {
     angular_velocity *= wheel_base_ / 2;
 
-    return std::pair<float, float>(
-        getClippedVeloctiy_((linear_velocity - angular_velocity) / wheel_radius_),
-        getClippedVeloctiy_((linear_velocity + angular_velocity) / wheel_radius_)
+    std::pair<float, float> wheel_velocities(
+        (linear_velocity - angular_velocity) / wheel_radius_,
+        (linear_velocity + angular_velocity) / wheel_radius_
     );
+
+    reduceWheelVelocties_(wheel_velocities);
+
+    return wheel_velocities;
 }
 
 std::pair<float, float> DifferentialDrive::getBotVelocity(

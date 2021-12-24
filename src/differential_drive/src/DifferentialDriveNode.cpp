@@ -3,8 +3,8 @@
 
 #include "differential_drive/ROSDifferentialDrive.h"
 
-#define WHEEL_BASE  0.11f // m
-#define WHEEL_DIA   0.044f // m
+#define WHEEL_BASE  0.212f // m
+#define WHEEL_DIA   0.065f // m
 
 #define WHEEL_MAX_SPEED 12.0f // rad/s
 

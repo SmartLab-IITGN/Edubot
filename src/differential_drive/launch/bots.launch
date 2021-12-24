@@ -1,8 +1,0 @@
-<launch>
-    
-    <include file="$(find differential_drive)/launch/hela.launch" />
-    <include file="$(find differential_drive)/launch/loki.launch" />
-    <include file="$(find differential_drive)/launch/odin.launch" />
-    <include file="$(find differential_drive)/launch/thor.launch" />
-
-</launch>
