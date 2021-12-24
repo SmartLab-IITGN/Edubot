@@ -1,3 +1,14 @@
+/**
+ * @file ROS_bot_control_example.cpp
+ * @author Souritra Garai (souritra.garai@iitgn.ac.in)
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-24
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <Arduino.h>
 
 #include <ros.h>

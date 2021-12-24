@@ -56,9 +56,9 @@ class MotorController : public AngularState, public PID, public FeedForward
 
         /**
          * @brief Variable to store truth value, whether to enable
-         * PID control for the motor
+         * motor control
          */
-        bool PID_control_enable_;
+        bool enable_;
 
 		float max_controller_output_;
 
@@ -152,23 +152,19 @@ void MotorController::spinMotor()
     // Calculate the angular velocity and store it in the variable angular_velocity_
     getAngularVelocity(angular_velocity_);
 
-    // If PID control is enabled
-    if (PID_control_enable_)
-    {
-        // Calculate the PID output and round it off to closest integer (for PWM output)
-        PID_output_ =  getPIDControllerOutput(angular_velocity_);
-        
-        // Write a HIGH or LOW value to the direction pin on the motor driver 
-        // depending on the sign of PID output
-        digitalWrite(direction_pin_, signbit(PID_output_ + getFeedForwardControllerOutput()));
-    }
+    // Calculate the PID output and round it off to closest integer (for PWM output)
+    PID_output_ =  getPIDControllerOutput(angular_velocity_);
+    
+    // Write a HIGH or LOW value to the direction pin on the motor driver 
+    // depending on the sign of PID output
+    digitalWrite(direction_pin_, signbit(PID_output_ + getFeedForwardControllerOutput()));
 }
 
 float MotorController::getControllerOutput()
 {
     // Set the duty cycle of PWM ouput to motor driver to the absolute value
     // of PID output. The value needs to be within 0xFFFF = (65535)_{10}
-	return min(abs(round(PID_output_ + getFeedForwardControllerOutput())), max_controller_output_);
+	return enable_ * min(abs(round(PID_output_ + getFeedForwardControllerOutput())), max_controller_output_);
 }
 
 #endif

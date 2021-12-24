@@ -36,17 +36,17 @@ MotorController::MotorController(
 void MotorController::stopMotor()
 {
     // Disable PID control
-    PID_control_enable_ = false;
-    // Set duty cyle for PWM output to 0
-    PID_output_ = 0;
+    enable_ = false;
 }
 
 void MotorController::enablePIDControl()
 {
     // Reset PID
     reset();
+    setMotorAngularVelocity(0);
+    
     // Enable PID
-    PID_control_enable_ = true;
+    enable_ = true;
 }
 
 void MotorController::setMaxControllerOutput(float max_controller_output)
