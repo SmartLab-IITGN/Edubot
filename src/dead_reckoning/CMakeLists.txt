@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(differential_drive)
+project(dead_reckoning)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -9,14 +9,17 @@ project(differential_drive)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  nav_msgs
   roscpp
-  rospy
+  tf2
   message_generation
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
+# System dependencies are found with CMake's conventions
+include_directories(${Eigen_INCLUDE_DIRS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -47,16 +50,17 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
-# Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  WheelAngularVelocityPair.msg
-)
+## Generate messages in the 'msg' folder
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 # Generate services in the 'srv' folder
 add_service_files(
   FILES
-  SetFloatParam.srv
+  SetStampedPoseParam.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -69,6 +73,7 @@ add_service_files(
 # Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
+  nav_msgs
 )
 
 ################################################
@@ -101,10 +106,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- INCLUDE_DIRS include include/${PROJECT_NAME}
- LIBRARIES ${PROJECT_NAME}
- CATKIN_DEPENDS geometry_msgs roscpp rospy message_runtime
- DEPENDS 
+  INCLUDE_DIRS include include/${PROJECT_NAME}
+  LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp tf2 message_runtime
+  DEPENDS
 )
 
 ###########
@@ -119,9 +124,9 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-# # Declare a C++ library
+## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/differential_drive.cpp
+#   src/${PROJECT_NAME}/dead_reckoning.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -132,7 +137,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/differential_drive_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/dead_reckoning_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -151,12 +156,17 @@ include_directories(
 
 # Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/${PROJECT_NAME}/DifferentialDrive.cpp
+  src/${PROJECT_NAME}/DeadReckoning.cpp
+)
+
+# Specify libraries to link a library or executable target against
+target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBRARIES}
 )
 
 # Declare a C++ library
 add_library(ROS_${PROJECT_NAME}
-  src/${PROJECT_NAME}/ROSDifferentialDrive.cpp
+  src/${PROJECT_NAME}/ROSDeadReckoning.cpp
 )
 
 # Specify libraries to link a library or executable target against
@@ -173,13 +183,7 @@ add_dependencies(ROS_${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catki
 # Declare a C++ executable
 # With catkin_make all packages are built within a single CMake context
 # The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/DifferentialDriveNode.cpp)
-
-# Rename C++ executable without prefix
-# The above recommended prefix causes long target names, the following renames the
-# target back to the shorter version for ease of user use
-# e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME diff_drive_node PREFIX "")
+add_executable(${PROJECT_NAME}_node src/DeadReckoningNode.cpp)
 
 # Add cmake target dependencies of the executable
 # same as for the library above
@@ -191,6 +195,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ROS_${PROJECT_NAME}
 )
 
+
 #############
 ## Install ##
 #############
@@ -198,18 +203,18 @@ target_link_libraries(${PROJECT_NAME}_node
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
-# Mark executable scripts (Python etc.) for installation
-# in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS
-  scripts/keyboard_controller.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+## Mark executable scripts (Python etc.) for installation
+## in contrast to setup.py, you can choose the destination
+# catkin_install_python(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
-# Mark executables for installation
-# See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_node
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+## Mark executables for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
+# install(TARGETS ${PROJECT_NAME}_node
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 # Mark libraries for installation
 # See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
@@ -226,18 +231,19 @@ install(DIRECTORY include/${PROJECT_NAME}/
   PATTERN ".svn" EXCLUDE
 )
 
-# Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES
-  launch/bot.launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+## Mark other files for installation (e.g. launch and bag files, etc.)
+# install(FILES
+#   # myfile1
+#   # myfile2
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
 
 #############
 ## Testing ##
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_differential_drive.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_dead_reckoning.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
