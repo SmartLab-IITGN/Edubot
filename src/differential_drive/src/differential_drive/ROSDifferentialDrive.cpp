@@ -68,7 +68,7 @@ void ROSDifferentialDrive::wheelCurrAngVelCb_(const differential_drive::WheelAng
 {
     std::pair<float, float> bot_vel = getBotVelocity(msg.wheel_angular_velocity_left, msg.wheel_angular_velocity_right);
 
-    vel_msg_.header.frame_id = "odom";
+    vel_msg_.header.frame_id = "base_link";
     // vel_msg_.header.seq is updated automatically
     vel_msg_.header.stamp = ros::Time::now();
 
