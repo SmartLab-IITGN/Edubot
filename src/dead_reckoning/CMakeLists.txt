@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   tf2
   tf2_ros
+  tf2_geometry_msgs
   message_generation
 )
 
@@ -109,7 +110,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include include/${PROJECT_NAME}
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp tf2 tf2_ros message_runtime
+  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp tf2 tf2_ros tf2_geometry_msgs message_runtime
   DEPENDS
 )
 
@@ -232,12 +233,11 @@ install(DIRECTORY include/${PROJECT_NAME}/
   PATTERN ".svn" EXCLUDE
 )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+# Mark other files for installation (e.g. launch and bag files, etc.)
+install(FILES
+  launch/bot.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 #############
 ## Testing ##

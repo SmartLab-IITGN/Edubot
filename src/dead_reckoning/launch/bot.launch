@@ -1,0 +1,11 @@
+<launch>
+    
+    <node pkg="rosserial_arduino" type="serial_node.py" name="rosserial_arduino">
+        <param name="port" type="string" value="/dev/ttyACM0"/>
+    </node>
+
+    <node name="diff_drive_node" pkg="differential_drive" type="diff_drive_node"/>
+
+    <node name="dead_reckoning_node" pkg="dead_reckoning" type="dead_reckoning_node"/>
+
+</launch>
