@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   roscpp
   tf2
+  tf2_ros
   message_generation
 )
 
@@ -108,7 +109,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include include/${PROJECT_NAME}
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp tf2 message_runtime
+  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp tf2 tf2_ros message_runtime
   DEPENDS
 )
 

@@ -9,7 +9,10 @@ int main(int argc, char **argv)
 
     ros::NodeHandle node_handle;
 
-    ROSDeadReckoning ros_dead_reckoning(node_handle);
+    std::string map_frame_name;
+    node_handle.param<std::string> ("map_frame", map_frame_name, "map");
+
+    ROSDeadReckoning ros_dead_reckoning(node_handle, map_frame_name);
 
     ROS_INFO("Dead Reckoning Node set up successfully.");
     

@@ -4,8 +4,12 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 ROSDeadReckoning::ROSDeadReckoning(
-    ros::NodeHandle &nh
-) : DeadReckoning(0, 0, 0, 0, 0, 0)   
+    ros::NodeHandle &nh,
+    std::string map_frame
+) : DeadReckoning(0, 0, 0, 0, 0, 0),
+    map_frame_(map_frame),
+    base_link_frame_(nh.getNamespace()),
+    odom_brdcstr_()
 {
     last_vel_cb_time_ = ros::Time::now().toSec();
 
@@ -47,28 +51,28 @@ void ROSDeadReckoning::velCb_(const geometry_msgs::TwistStamped &msg)
 
     last_vel_cb_time_ = curr_time;
 
-    odom_msg_.header.stamp = msg.header.stamp;
+    odom_tf_.header.stamp = odom_msg_.header.stamp = msg.header.stamp;
 
-    odom_msg_.header.frame_id = "odom";
-    odom_msg_.child_frame_id  = "odom";
+    odom_tf_.header.frame_id = odom_msg_.header.frame_id = map_frame_;
+    odom_tf_.child_frame_id = odom_msg_.child_frame_id  = base_link_frame_;
 
-    Eigen::Vector3f p, p_dot;
+    Eigen::Vector3f p;
     p = getPosture();
-    p_dot = getPostureTimeDerivative();
 
-    odom_msg_.pose.pose.position.x = p(0);
-    odom_msg_.pose.pose.position.y = p(1);
+    odom_tf_.transform.translation.x = odom_msg_.pose.pose.position.x = p(0);
+    odom_tf_.transform.translation.y = odom_msg_.pose.pose.position.y = p(1);
+    odom_tf_.transform.translation.z = odom_msg_.pose.pose.position.z = 0;
 
     tf2::Quaternion orientation;
 
     orientation.setRPY(0, 0, p(2));
     
-    odom_msg_.pose.pose.orientation = tf2::toMsg(orientation);
+    odom_tf_.transform.rotation = odom_msg_.pose.pose.orientation = tf2::toMsg(orientation);
 
-    odom_msg_.twist.twist.linear.x = p_dot(0);
-    odom_msg_.twist.twist.linear.y = p_dot(1);
+    odom_brdcstr_.sendTransform(odom_tf_);
 
-    odom_msg_.twist.twist.angular.z = p_dot(2);
+    odom_msg_.twist.twist.linear.x = q[0];
+    odom_msg_.twist.twist.angular.z = q[1];
 
     odom_pub_.publish(odom_msg_);
 }
