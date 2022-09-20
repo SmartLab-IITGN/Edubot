@@ -1,2 +1,4 @@
 float32 wheel_angular_velocity_left
 float32 wheel_angular_velocity_right
+float32 wheel_angle_left
+float32 wheel_angle_right

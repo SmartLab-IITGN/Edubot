@@ -133,6 +133,8 @@ class AngularState : public Encoder
          * velocity is set
          */
         inline void getAngularAcceleration(float &angular_velocity)  __attribute__((always_inline));
+
+        inline float getMotorAngle(float &angle)  __attribute__((always_inline));
 };
 
 /*============================================================================================================*/
@@ -187,6 +189,32 @@ void AngularState::getAngularVelocity(float &angular_velocity)
         }
         
     #endif
+}
+
+
+void AngularState::getMotorAngle(float &angle)
+{
+    #if !defined(ESP8266)
+    
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        {
+            // Atomic block prevents any interrupts from
+            // stopping the initializing task
+    
+    #endif
+    
+            // Return the last detected absolute angular state of the motor
+        angle = reverse_ * 2 * PI * ((float)encoder_readings_array_[0]/ counts_per_rotation_);
+
+    #if !defined(ESP8266)
+            
+            // Atomic restorestate will restore the status
+            // of interrupts to whatever it was before it stopped
+            // all interrupts, i.e. enabled / disabled.
+        }
+        
+    #endif
+        
 }
 
 // Calculate and set the argument passed by reference, angular acceleration, from  
