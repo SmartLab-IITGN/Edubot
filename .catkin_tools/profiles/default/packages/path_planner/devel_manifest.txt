@@ -1,5 +1,0 @@
-path_planner
-/home/videh/Documents/Edubot/Edubot/devel/.private/path_planner/cmake.lock /home/videh/Documents/Edubot/Edubot/devel/./cmake.lock
-/home/videh/Documents/Edubot/Edubot/devel/.private/path_planner/share/path_planner/cmake/path_plannerConfig.cmake /home/videh/Documents/Edubot/Edubot/devel/share/path_planner/cmake/path_plannerConfig.cmake
-/home/videh/Documents/Edubot/Edubot/devel/.private/path_planner/share/path_planner/cmake/path_plannerConfig-version.cmake /home/videh/Documents/Edubot/Edubot/devel/share/path_planner/cmake/path_plannerConfig-version.cmake
-/home/videh/Documents/Edubot/Edubot/devel/.private/path_planner/lib/pkgconfig/path_planner.pc /home/videh/Documents/Edubot/Edubot/devel/lib/pkgconfig/path_planner.pc
