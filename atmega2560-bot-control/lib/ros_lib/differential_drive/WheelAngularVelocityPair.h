@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
+#include "ros/time.h"
 
 namespace differential_drive
 {
@@ -12,20 +13,39 @@ namespace differential_drive
   class WheelAngularVelocityPair : public ros::Msg
   {
     public:
+      typedef ros::Time _time_stamp_type;
+      _time_stamp_type time_stamp;
       typedef float _wheel_angular_velocity_left_type;
       _wheel_angular_velocity_left_type wheel_angular_velocity_left;
       typedef float _wheel_angular_velocity_right_type;
       _wheel_angular_velocity_right_type wheel_angular_velocity_right;
+      typedef float _wheel_angle_left_type;
+      _wheel_angle_left_type wheel_angle_left;
+      typedef float _wheel_angle_right_type;
+      _wheel_angle_right_type wheel_angle_right;
 
     WheelAngularVelocityPair():
+      time_stamp(),
       wheel_angular_velocity_left(0),
-      wheel_angular_velocity_right(0)
+      wheel_angular_velocity_right(0),
+      wheel_angle_left(0),
+      wheel_angle_right(0)
     {
     }
 
     virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
+      *(outbuffer + offset + 0) = (this->time_stamp.sec >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (this->time_stamp.sec >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (this->time_stamp.sec >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (this->time_stamp.sec >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->time_stamp.sec);
+      *(outbuffer + offset + 0) = (this->time_stamp.nsec >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (this->time_stamp.nsec >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (this->time_stamp.nsec >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (this->time_stamp.nsec >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->time_stamp.nsec);
       union {
         float real;
         uint32_t base;
@@ -46,12 +66,42 @@ namespace differential_drive
       *(outbuffer + offset + 2) = (u_wheel_angular_velocity_right.base >> (8 * 2)) & 0xFF;
       *(outbuffer + offset + 3) = (u_wheel_angular_velocity_right.base >> (8 * 3)) & 0xFF;
       offset += sizeof(this->wheel_angular_velocity_right);
+      union {
+        float real;
+        uint32_t base;
+      } u_wheel_angle_left;
+      u_wheel_angle_left.real = this->wheel_angle_left;
+      *(outbuffer + offset + 0) = (u_wheel_angle_left.base >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (u_wheel_angle_left.base >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (u_wheel_angle_left.base >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (u_wheel_angle_left.base >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->wheel_angle_left);
+      union {
+        float real;
+        uint32_t base;
+      } u_wheel_angle_right;
+      u_wheel_angle_right.real = this->wheel_angle_right;
+      *(outbuffer + offset + 0) = (u_wheel_angle_right.base >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (u_wheel_angle_right.base >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (u_wheel_angle_right.base >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (u_wheel_angle_right.base >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->wheel_angle_right);
       return offset;
     }
 
     virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
+      this->time_stamp.sec =  ((uint32_t) (*(inbuffer + offset)));
+      this->time_stamp.sec |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      this->time_stamp.sec |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      this->time_stamp.sec |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      offset += sizeof(this->time_stamp.sec);
+      this->time_stamp.nsec =  ((uint32_t) (*(inbuffer + offset)));
+      this->time_stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      this->time_stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      this->time_stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      offset += sizeof(this->time_stamp.nsec);
       union {
         float real;
         uint32_t base;
@@ -74,11 +124,33 @@ namespace differential_drive
       u_wheel_angular_velocity_right.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
       this->wheel_angular_velocity_right = u_wheel_angular_velocity_right.real;
       offset += sizeof(this->wheel_angular_velocity_right);
+      union {
+        float real;
+        uint32_t base;
+      } u_wheel_angle_left;
+      u_wheel_angle_left.base = 0;
+      u_wheel_angle_left.base |= ((uint32_t) (*(inbuffer + offset + 0))) << (8 * 0);
+      u_wheel_angle_left.base |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      u_wheel_angle_left.base |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      u_wheel_angle_left.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      this->wheel_angle_left = u_wheel_angle_left.real;
+      offset += sizeof(this->wheel_angle_left);
+      union {
+        float real;
+        uint32_t base;
+      } u_wheel_angle_right;
+      u_wheel_angle_right.base = 0;
+      u_wheel_angle_right.base |= ((uint32_t) (*(inbuffer + offset + 0))) << (8 * 0);
+      u_wheel_angle_right.base |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      u_wheel_angle_right.base |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      u_wheel_angle_right.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      this->wheel_angle_right = u_wheel_angle_right.real;
+      offset += sizeof(this->wheel_angle_right);
      return offset;
     }
 
     virtual const char * getType() override { return "differential_drive/WheelAngularVelocityPair"; };
-    virtual const char * getMD5() override { return "adff221a07855e72470c2f5460fcf2d6"; };
+    virtual const char * getMD5() override { return "3cac625670abdec2f5b72e4384957d47"; };
 
   };
 
