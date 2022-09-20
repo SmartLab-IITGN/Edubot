@@ -134,7 +134,7 @@ class AngularState : public Encoder
          */
         inline void getAngularAcceleration(float &angular_velocity)  __attribute__((always_inline));
 
-        inline float getMotorAngle(float &angle)  __attribute__((always_inline));
+        inline void getMotorAngle(float &angle)  __attribute__((always_inline));
 };
 
 /*============================================================================================================*/
@@ -204,7 +204,7 @@ void AngularState::getMotorAngle(float &angle)
     #endif
     
             // Return the last detected absolute angular state of the motor
-        angle = reverse_ * 2 * PI * ((float)encoder_readings_array_[0]/ counts_per_rotation_);
+        angle = 2 * PI * ((float)encoder_readings_array_[0]/ counts_per_rotation_);
 
     #if !defined(ESP8266)
             
