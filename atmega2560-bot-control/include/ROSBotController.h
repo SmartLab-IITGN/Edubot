@@ -53,7 +53,7 @@ class ROSBotController
 
         void initialize(ros::NodeHandle &node_handle);
 
-        void publish();
+        void publish(ros::NodeHandle &node_handle);
 };
 
 #endif

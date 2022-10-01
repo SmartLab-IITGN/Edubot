@@ -95,7 +95,7 @@ void loop()
 {
     if (millis() - prev_ros_cylce_time > ROS_CYCLE_TIME_PERIOD)
     {
-        bot_controller.publish();
+        bot_controller.publish(node_handle);
 
         node_handle.spinOnce();
 
