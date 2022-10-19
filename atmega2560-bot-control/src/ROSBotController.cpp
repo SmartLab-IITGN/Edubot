@@ -80,7 +80,6 @@ void ROSBotController::publish(ros::NodeHandle &node_handle)
     current_angular_velocity_message_.wheel_angular_velocity_right = motor_controller_right_.getMotorAngularVelocity();
     motor_controller_right_.getMotorAngle(current_angular_velocity_message_.wheel_angle_right);
     motor_controller_left_.getMotorAngle(current_angular_velocity_message_.wheel_angle_left);
-    current_angular_velocity_message_.time_stamp = node_handle.now(); 
 
     current_angular_velocity_publisher_.publish(&current_angular_velocity_message_);
 }
