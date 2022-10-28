@@ -10,7 +10,7 @@ import time
 WHEEL_BASE =  0.212     # m
 WHEEL_DIA =   0.065     # m
 WHEEL_MAX_SPEED = 12.0  # rad/s
-SQ_DISTANCE = 1.0          # m
+SQ_DISTANCE = 1.5          # m
 
 # Commands Twist to a topic to conduct UMBmark test on the robot
 class UMBmarkNode:
@@ -72,7 +72,7 @@ class UMBmarkNode:
         starting_right_angle = self.right_wheel_angle
         
         # Give Command
-        self.twist_msg.angular.z =  WHEEL_MAX_SPEED*WHEEL_DIA/WHEEL_BASE /12
+        self.twist_msg.angular.z =  -WHEEL_MAX_SPEED*WHEEL_DIA/WHEEL_BASE /12
         self.twist_msg.linear.x = 0
         self.pub_twist()
 
@@ -140,8 +140,14 @@ class UMBmarkNode:
             self.twist_pub.publish(self.twist_msg)
             time.sleep(0.2)
 
+    def go_and_return(self):
+        self.go_straight()
+        self.turn_ccw()
+        self.turn_ccw()
+        self.go_straight()
+
 if __name__ == "__main__":
-    UMBMarktest_node = UMBmarkNode("ghost", WHEEL_MAX_SPEED/4)
+    UMBMarktest_node = UMBmarkNode("ghost", WHEEL_MAX_SPEED*6/6)
     rospy.sleep(4)
     print("STARTING NOW")
 
