@@ -1,10 +1,18 @@
+<!-- Edubot launch file to be ran on -->
+
 <launch>
     <arg name="port" default="/dev/ttyACM0"/>
+    <arg name="localization" default="dead">
+    <!-- arg('localization') == 'none' ==> localization Turned Off -->
+    <!-- arg('localization') == 'dead' ==> Dead Reckoning -->
     
-    <node pkg="rosserial_arduino" type="serial_node.py" name="rosserial_arduino">
+    <node pkg="rosserial_arduino" type="serial_node.py" name="rosserial_node">
         <param name="port" type="string" value="$(arg port)"/>
     </node>
 
-    <node name="diff_drive_node" pkg="differential_drive" type="diff_drive_node"/>
+    <node pkg="differential_drive" type="diff_drive_node" name="diff_drive_node"/>
+
+    <!-- DEAD RECKONING -->
+    <node name="dead_reckoning_node" pkg="dead_reckoning" type="dead_reckoning_node" if= "$(eval arg('localization') == 'dead')"/>
 
 </launch>
