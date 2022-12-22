@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>edubot_msgs</name>
-  <version>0.0.0</version>
   <version>1.0.0</version>
   <description>Package that will store all custom msgs if ever required by the Edubot.</description>
 

@@ -2,7 +2,6 @@
 <package format="2">
   <name>dead_reckoning</name>
   <version>1.0.0</version>
-  <version>0.0.0</version>
   <description>Modular package, designed for the edubot. For implementing Odometry/Dead-Reckoning for different drive robots.</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
