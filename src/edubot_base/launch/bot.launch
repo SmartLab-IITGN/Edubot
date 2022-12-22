@@ -2,7 +2,7 @@
 
 <launch>
     <arg name="port" default="/dev/ttyACM0"/>
-    <arg name="localization" default="dead">
+    <arg name="localization" default="dead"/>
     <!-- arg('localization') == 'none' ==> localization Turned Off -->
     <!-- arg('localization') == 'dead' ==> Dead Reckoning -->
     
