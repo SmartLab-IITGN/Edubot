@@ -1,7 +1,7 @@
-<!-- Uses rviz_plugin_tutorial's TeleopPanel -->
 <launch>
     <arg name="bot_name" doc="Name of the Edubot this node will control"/>
 
     <node pkg="rosservice" type="rosservice" name="global_loc" args="call --wait $(arg bot_name)/move_bot" />
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find edubot_bringup)/rviz/rviz_teleop.rviz" />
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find edubot_bringup)/rviz/rviz_odom.rviz" />
 </launch>
+<!-- Can be used with differential drives's keyboard controller -->
