@@ -1,7 +1,7 @@
 <!-- Edubot launch file to be ran on -->
 
 <launch>
-    <arg name="port" default="/dev/ttyACM0"/>
+    <arg name="port" default="/dev/arduino_mega"/>
     <arg name="localization" default="dead"/>
     <!-- arg('localization') == 'none' ==> localization Turned Off -->
     <!-- arg('localization') == 'dead' ==> Dead Reckoning -->
