@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<robot name="edubot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find edubot_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find edubot_description)/urdf/edubot.trans" />
+<xacro:include filename="$(find edubot_description)/urdf/edubot.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="-0.005597409870864045 1.2680790124118197e-05 0.07582549638323267" rpy="0 0 0"/>
+    <mass value="0.9913933449583395"/>
+    <inertia ixx="0.008662" iyy="0.007488" izz="0.009111" ixy="-0.0" iyz="-0.0" ixz="-7.8e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="left_wheel_1">
+  <inertial>
+    <origin xyz="-3.671446903204126e-06 0.009837728922762912 1.9649811738159384e-06" rpy="0 0 0"/>
+    <mass value="0.04849136422697651"/>
+    <inertia ixx="2.1e-05" iyy="3.6e-05" izz="2.1e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000521 -0.091514 -0.032993" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000521 -0.091514 -0.032993" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar_1">
+  <inertial>
+    <origin xyz="-0.020037183493869598 -0.028105106955607077 0.0238922170664298" rpy="0 0 0"/>
+    <mass value="0.5105733408581701"/>
+    <inertia ixx="0.000432" iyy="0.000212" izz="0.000506" ixy="0.0" iyz="3.9e-05" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.037521 -0.085896 -0.169993" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.037521 -0.085896 -0.169993" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="laser_1">
+  <inertial>
+    <origin xyz="2.4505540371921875e-07 2.831249775042677e-07 -0.009000296212421988" rpy="0 0 0"/>
+    <mass value="0.00011097676048805946"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.057521 -0.043896 -0.223493" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/laser_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.057521 -0.043896 -0.223493" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/laser_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="right_wheel_1">
+  <inertial>
+    <origin xyz="4.840207803405547e-06 -0.009795033661765276 -2.9621241774691054e-07" rpy="0 0 0"/>
+    <mass value="0.04772349189028793"/>
+    <inertia ixx="2e-05" iyy="3.6e-05" izz="2e-05" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000521 0.091486 -0.032993" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000521 0.091486 -0.032993" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://edubot_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="left_motor" type="continuous">
+  <origin xyz="-0.000521 0.091514 0.032993" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="left_wheel_1"/>
+  <axis xyz="-0.0 1.0 0.0"/>
+</joint>
+
+<joint name="lidar_to_base" type="fixed">
+  <origin xyz="-0.037521 0.085896 0.169993" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="lidar_1"/>
+</joint>
+
+<joint name="lidar2laser" type="fixed">
+  <origin xyz="-0.02 -0.042 0.0535" rpy="0 0 0"/>
+  <parent link="lidar_1"/>
+  <child link="laser_1"/>
+</joint>
+
+<joint name="right_motor" type="continuous">
+  <origin xyz="-0.000521 -0.091486 0.032993" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="right_wheel_1"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+</robot>
