@@ -25,7 +25,7 @@
   </collision>
 </link>
 
-<link name="left_wheel_1">
+<link name="left_wheel">
   <inertial>
     <origin xyz="-3.671446903204126e-06 0.009837728922762912 1.9649811738159384e-06" rpy="0 0 0"/>
     <mass value="0.04849136422697651"/>
@@ -34,19 +34,19 @@
   <visual>
     <origin xyz="0.000521 -0.091514 -0.032993" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.000521 -0.091514 -0.032993" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="lidar_1">
+<link name="lidar">
   <inertial>
     <origin xyz="-0.020037183493869598 -0.028105106955607077 0.0238922170664298" rpy="0 0 0"/>
     <mass value="0.5105733408581701"/>
@@ -55,19 +55,19 @@
   <visual>
     <origin xyz="0.037521 -0.085896 -0.169993" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/lidar.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.037521 -0.085896 -0.169993" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/lidar.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="laser_1">
+<link name="base_laser">
   <inertial>
     <origin xyz="2.4505540371921875e-07 2.831249775042677e-07 -0.009000296212421988" rpy="0 0 0"/>
     <mass value="0.00011097676048805946"/>
@@ -76,19 +76,19 @@
   <visual>
     <origin xyz="0.057521 -0.043896 -0.223493" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/laser_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/dummy.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.057521 -0.043896 -0.223493" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/laser_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/dummy.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<link name="right_wheel_1">
+<link name="right_wheel">
   <inertial>
     <origin xyz="4.840207803405547e-06 -0.009795033661765276 -2.9621241774691054e-07" rpy="0 0 0"/>
     <mass value="0.04772349189028793"/>
@@ -97,14 +97,14 @@
   <visual>
     <origin xyz="0.000521 0.091486 -0.032993" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.000521 0.091486 -0.032993" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://edubot_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="package://edubot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -112,26 +112,26 @@
 <joint name="left_motor" type="continuous">
   <origin xyz="-0.000521 0.091514 0.032993" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="left_wheel_1"/>
+  <child link="left_wheel"/>
   <axis xyz="-0.0 1.0 0.0"/>
 </joint>
 
 <joint name="lidar_to_base" type="fixed">
   <origin xyz="-0.037521 0.085896 0.169993" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="lidar_1"/>
+  <child link="lidar"/>
 </joint>
 
 <joint name="lidar2laser" type="fixed">
-  <origin xyz="-0.02 -0.042 0.0535" rpy="0 0 0"/>
-  <parent link="lidar_1"/>
-  <child link="laser_1"/>
+  <origin xyz="-0.02 -0.042 0.0465" rpy="0 0 0"/>
+  <parent link="lidar"/>
+  <child link="base_laser"/>
 </joint>
 
 <joint name="right_motor" type="continuous">
   <origin xyz="-0.000521 -0.091486 0.032993" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="right_wheel_1"/>
+  <child link="right_wheel"/>
   <axis xyz="0.0 1.0 -0.0"/>
 </joint>
 
