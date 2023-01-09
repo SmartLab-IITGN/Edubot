@@ -18,7 +18,7 @@ class ROSDeadReckoning : public DeadReckoning
         long double last_vel_cb_time_;
 
         std::string base_link_frame_;
-        std::string map_frame_;
+        std::string odom_init_frame_;
 
         tf2_ros::TransformBroadcaster odom_brdcstr_;
         geometry_msgs::TransformStamped odom_tf_;
