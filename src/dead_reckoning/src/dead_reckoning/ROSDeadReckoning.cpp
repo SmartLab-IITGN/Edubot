@@ -8,7 +8,7 @@ ROSDeadReckoning::ROSDeadReckoning(
     std::string map_frame
 ) : DeadReckoning(0, 0, 0, 0, 0, 0),
     map_frame_(map_frame),
-    base_link_frame_(nh.getNamespace()),
+    base_link_frame_(nh.getNamespace() + std::string("/odom")),
     odom_brdcstr_()
 {
     last_vel_cb_time_ = ros::Time::now().toSec();
