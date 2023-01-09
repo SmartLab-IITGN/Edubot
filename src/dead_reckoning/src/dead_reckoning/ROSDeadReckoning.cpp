@@ -5,9 +5,9 @@
 
 ROSDeadReckoning::ROSDeadReckoning(
     ros::NodeHandle &nh,
-    std::string map_frame
+    std::string odom_init_frame
 ) : DeadReckoning(0, 0, 0, 0, 0, 0),
-    odom_init_frame_(map_frame),
+    odom_init_frame_(nh.getNamespace() + "/" + odom_init_frame),
     base_link_frame_(nh.getNamespace() + "/base_link"),
     odom_brdcstr_()
 {
@@ -53,7 +53,7 @@ void ROSDeadReckoning::velCb_(const geometry_msgs::TwistStamped &msg)
 
     odom_tf_.header.stamp = odom_msg_.header.stamp = msg.header.stamp;
 
-    odom_tf_.header.frame_id = odom_msg_.header.frame_id = nh.getNamespace() + "/" + odom_init_frame_;
+    odom_tf_.header.frame_id = odom_msg_.header.frame_id = odom_init_frame_;
     odom_tf_.child_frame_id = odom_msg_.child_frame_id  = base_link_frame_;
 
     Eigen::Vector3f p;
