@@ -27,7 +27,7 @@ void ROSDeadReckoning::init_subs_(
 void ROSDeadReckoning::init_pubs_(
     ros::NodeHandle &node_handle
 ) {
-    odom_pub_ = node_handle.advertise<nav_msgs::Odometry> ("posture",  1000);
+    odom_pub_ = node_handle.advertise<nav_msgs::Odometry> ("odom",  1000);
 }
 
 void ROSDeadReckoning::init_srv_servers_(
