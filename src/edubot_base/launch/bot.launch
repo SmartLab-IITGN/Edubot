@@ -1,16 +1,16 @@
 <!-- Edubot launch file to be ran on -->
 
 <launch>
-    <arg name="port" default="/dev/arduino_mega"/>
+    <!-- <arg name="arduino_port" default="/dev/arduino_mega"/> -->
     <arg name="with_lidar" default="true"/>
     <arg name="localization" default="none"/>
     <!-- arg('localization') == 'none' ==> localization Turned Off -->
     <!-- arg('localization') == 'dead' ==> Dead Reckoning -->
     
     <!-- Start the Core Hardware -->
-    <node pkg="rosserial_arduino" type="serial_node.py" name="rosserial_node"/>
+    <node pkg="rosserial_arduino" type="serial_node.py" name="rosserial_node" args="_port:=/dev/arduino_mega"/>
     <node pkg="differential_drive" type="diff_drive_node" name="diff_drive_node"/>
-    <node pkg="rplidar_ros" type="rplidarNode" name="lidar_node"/>
+    <node pkg="rplidar_ros" type="rplidarNode" name="lidar_node" args="_port:=/dev/rplidar/>
 
     <!-- DEAD RECKONING -->
     <node name="dead_reckoning_node" pkg="dead_reckoning" type="dead_reckoning_node" if= "$(eval arg('localization') == 'dead')"/>
