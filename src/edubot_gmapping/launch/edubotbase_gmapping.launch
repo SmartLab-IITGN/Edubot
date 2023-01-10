@@ -7,7 +7,7 @@
         <arg name="localization" value="dead"/>
     </include>
     
-    <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen" ns="$(env ROS_NAMESPACE)">
+    <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen">
         <rosparam file="$(find edubot_gmapping)/config/edubot_gmapping.yaml" command="load"/> 
     </node>
 
