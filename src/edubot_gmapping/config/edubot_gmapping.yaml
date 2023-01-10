@@ -1,0 +1,3 @@
+base_frame: ghost/base_link
+map_frame: map
+odom_frame: ghost/odom
