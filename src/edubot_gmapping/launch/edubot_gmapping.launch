@@ -3,9 +3,9 @@
     <arg name="bot_name"/>
     <arg name="model" default="$(find edubot_description)/urdf/edubot.xacro"/>
     
-    <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen" ns="$(arg bot_name)">
-        <rosparam file="$(find edubot_gmapping)/config/edubot_gmapping.yaml" command="load"/> 
-    </node>
+    <!-- <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen" ns="$(arg bot_name)"> -->
+        <!-- <rosparam file="$(find edubot_gmapping)/config/edubot_gmapping.yaml" command="load"/>  -->
+    <!-- </node> -->
 
     <!-- Transforms -->
     <param name="$(arg bot_name)/tf_prefix" value="$(arg bot_name)"/>

@@ -1,0 +1,21 @@
+<launch>
+
+    <arg name="bot_name"/>
+    <!-- <arg name="model" default="$(find edubot_description)/urdf/edubot.xacro"/> -->
+    
+    <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen" ns="$(arg bot_name)">
+        <rosparam file="$(find edubot_gmapping)/config/edubot_gmapping.yaml" command="load"/> 
+    </node>
+
+    <!-- Transforms -->
+    <!-- <param name="$(arg bot_name)/tf_prefix" value="$(arg bot_name)"/> -->
+    <!-- <param name="$(arg bot_name)/robot_description" command="$(find xacro)/xacro $(arg model)"/> -->
+    <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="$(arg bot_name)"> -->
+   <!-- </node> -->
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="ghostmap_map_broadcaster" args="0 0 0 0 0 0 1 map $(arg bot_name)/map 100" /> -->
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find edubot_gmapping)/launch/gmapping.rviz" /> -->
+
+
+
+</launch>
