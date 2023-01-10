@@ -1,9 +1,13 @@
 <launch>
 
-    <arg name="bot_name"/>
+    <!-- <arg name="bot_name"/> -->
     <!-- <arg name="model" default="$(find edubot_description)/urdf/edubot.xacro"/> -->
     
-    <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen" ns="$(arg bot_name)">
+    <include file="$(find edubot_base)/launch/bot.launch">
+        <arg name="localization" value="dead"/>
+    </include>
+    
+    <node pkg="gmapping" type="slam_gmapping" respawn="false" name="gmapping" output="screen" ns="$(env ROS_NAMESPACE)">
         <rosparam file="$(find edubot_gmapping)/config/edubot_gmapping.yaml" command="load"/> 
     </node>
 
