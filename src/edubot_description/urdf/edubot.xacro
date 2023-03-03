@@ -2,8 +2,8 @@
 <robot name="edubot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <xacro:include filename="$(find edubot_description)/urdf/materials.xacro" />
-<xacro:include filename="$(find edubot_description)/urdf/edubot.trans" />
-<xacro:include filename="$(find edubot_description)/urdf/edubot.gazebo" />
+<xacro:include filename="$(find edubot_description)/urdf/edubot.trans.xacro" />
+<xacro:include filename="$(find edubot_description)/urdf/edubot.gazebo.xacro" />
 <link name="base_link">
   <inertial>
     <origin xyz="-0.005597409870864045 1.2680790124118197e-05 0.07582549638323267" rpy="0 0 0"/>
